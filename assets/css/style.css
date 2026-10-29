@@ -303,7 +303,7 @@ dialog.namecard::backdrop { background: rgba(8, 14, 24, .45); backdrop-filter: b
 /* ---------- life photo wall ---------- */
 .photowall { columns: 3 17rem; column-gap: 1.2rem; padding-bottom: 2rem; }
 .photowall figure { break-inside: avoid; margin: 0 0 1.6rem; display: grid; gap: .55rem; }
-.photowall img { width: 100%; height: auto; border-radius: var(--radius); background: var(--paper-2); }
+.photowall img, .photowall video { width: 100%; height: auto; display: block; border-radius: var(--radius); background: var(--paper-2); }
 .photowall figcaption { font-size: .95rem; color: var(--ink-2); }
 .photowall figcaption b { display: block; font-family: var(--f-display); font-weight: 500; font-size: 1.1rem; color: var(--ink); }
 
