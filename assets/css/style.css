@@ -354,3 +354,26 @@ dialog.namecard::backdrop { background: rgba(8, 14, 24, .45); backdrop-filter: b
   .tl { grid-template-columns: minmax(0, 1fr); gap: .4rem; }
   .tl .when br { display: none; }
 }
+
+/* ===== v3 hero: full 3:4 portrait, text vertically centred beside it ===== */
+.wrap.narrow { max-width: 58rem; }
+.hero { grid-template-columns: minmax(0, 1fr) 19rem; gap: 3.5rem; align-items: center; padding-block: 3.5rem 3.2rem; }
+.hero .portrait { width: 19rem; aspect-ratio: 3 / 4; border-radius: 12px; border: 0; }
+.hero .portrait img { object-fit: cover; object-position: 50% 50%; }
+.hero-text { gap: 1rem; max-width: 34rem; }
+.hero .name { font-size: clamp(2.5rem, 5vw, 3.6rem); }
+.statement { font-size: 1.32rem; }
+@media (max-width: 860px) {
+  .hero { grid-template-columns: minmax(0, 1fr) 15rem; gap: 2.2rem; }
+  .hero .portrait { width: 15rem; }
+}
+@media (max-width: 680px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; padding-block: 2rem; }
+  .hero .portrait { order: 0; width: min(100%, 20rem); }
+}
+.hero { grid-template-columns: minmax(0, 1fr) 21rem; gap: 3.2rem; }
+.hero .portrait { width: 21rem; }
+.statement { font-size: 1.24rem; }
+@media (max-width: 860px) { .hero { grid-template-columns: minmax(0, 1fr) 15rem; } .hero .portrait { width: 15rem; } }
+@media (max-width: 680px) { .hero { grid-template-columns: minmax(0, 1fr); } .hero .portrait { width: min(100%, 18rem); } }
+@media (max-width: 640px) { .nav a { padding: .35rem .4rem; } }
