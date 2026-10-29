@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Too Deep · Zijun Zhuang</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<!-- Absolute paths so this page works at any missing URL on GitHub Pages -->
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<style>
+  .deep { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 2.5rem; align-items: center; padding-block: 3rem; }
+  .deep h1 { font-size: var(--step-4); }
+  .deep .code { font-family: var(--f-mono); font-size: .8rem; color: var(--accent); letter-spacing: .1em; }
+  .deep-text { display: grid; gap: 1rem; max-width: 30rem; }
+  .pool { position: relative; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--rule); aspect-ratio: 4 / 5; max-width: 100%; max-height: 72vh; user-select: none; -webkit-user-select: none; touch-action: none; cursor: pointer; }
+  .pool canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hud { position: absolute; left: .8rem; right: .8rem; top: .7rem; display: flex; justify-content: space-between; gap: .5rem; font-family: var(--f-mono); font-size: .74rem; color: #eaf2fb; pointer-events: none; }
+  .air { position: absolute; left: .8rem; right: .8rem; bottom: .8rem; height: 6px; border-radius: 3px; background: rgba(255,255,255,.18); overflow: hidden; pointer-events: none; }
+  .air i { display: block; height: 100%; width: 100%; background: #8fd3ff; transform-origin: left; }
+  .msg { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 1.5rem; pointer-events: none; color: #eaf2fb; font-family: var(--f-display); font-size: 1.3rem; line-height: 1.35; }
+  .msg small { display: block; font-family: var(--f-mono); font-size: .72rem; opacity: .8; margin-top: .6rem; }
+  @media (max-width: 760px) { .deep { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; padding-block: 2rem; } .pool { aspect-ratio: 3 / 4; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="wordmark" href="/">Zijun Zhuang</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/">about</a>
+      <a href="/life.html">life</a>
+    </nav>
+    <button class="theme-btn" type="button" aria-label="Switch theme"></button>
+  </div>
+</header>
+<main class="page">
+  <div class="wrap deep">
+    <div class="deep-text">
+      <span class="code">ERROR 404</span>
+      <h1>You went deeper than this site goes.</h1>
+      <p>The page you were looking for does not exist. While you are down here, try a dive.</p>
+      <p class="caption">Hold the mouse, a finger, or the space bar to kick down. Let go to float up. Surface before your air runs out. My personal best is 16 m.</p>
+      <div class="links"><a class="chip solid" href="/">Back to the surface</a><a class="chip" href="/life.html">More about diving</a></div>
+    </div>
+    <div class="pool" id="pool" tabindex="0" aria-label="Freediving game. Hold space to descend, release to ascend.">
+      <canvas></canvas>
+      <div class="hud"><span id="depth">0.0 m</span><span id="best">best 0.0 m</span></div>
+      <div class="air"><i id="air"></i></div>
+      <div class="msg" id="msg"><div>Hold to dive<small>release to come back up</small></div></div>
+    </div>
+  </div>
+</main>
+<script src="/assets/js/main.js"></script>
+<script>
+(function () {
+  var pool = document.getElementById("pool"), cv = pool.querySelector("canvas"), ctx = cv.getContext("2d");
+  var depthEl = document.getElementById("depth"), bestEl = document.getElementById("best"), airEl = document.getElementById("air"), msg = document.getElementById("msg");
+  var PB = 16, DOWN = 1.8, UP = 1.5, AIR = 24; // m/s, m/s, seconds of air at rest
+  var st = { d: 0, air: 1, hold: false, diving: false, max: 0, best: 0, out: false, t: 0 };
+  var W = 0, H = 0, last = 0;
+
+  function size() { var r = cv.getBoundingClientRect(), k = Math.min(2, devicePixelRatio || 1); W = r.width; H = r.height; cv.width = W * k; cv.height = H * k; ctx.setTransform(k, 0, 0, k, 0, 0); }
+  function say(html) { msg.innerHTML = html ? "<div>" + html + "</div>" : ""; }
+
+  function down(e) { if (e) e.preventDefault(); if (st.out) return; st.hold = true; if (!st.diving) { st.diving = true; st.max = 0; st.air = 1; say(""); } }
+  function up() { st.hold = false; }
+  pool.addEventListener("pointerdown", function (e) { pool.setPointerCapture && pool.setPointerCapture(e.pointerId); down(e); });
+  pool.addEventListener("pointerup", up); pool.addEventListener("pointercancel", up);
+  addEventListener("keydown", function (e) { if (e.code === "Space") { down(e); } });
+  addEventListener("keyup", function (e) { if (e.code === "Space") up(); });
+
+  function tick(now) {
+    var dt = Math.min(0.05, (now - (last || now)) / 1000); last = now;
+    if (st.diving) {
+      if (st.out) { st.d = Math.max(0, st.d - 4 * dt); }
+      else {
+        st.d = Math.max(0, st.d + (st.hold ? DOWN : -UP) * dt);
+        st.air -= dt / AIR * (st.hold ? 1.3 : 1);
+        st.max = Math.max(st.max, st.d);
+        if (st.air <= 0) {
+          st.air = 0; st.out = true; st.hold = false;
+          say("Blackout at " + st.d.toFixed(1) + " m.<small>Your buddy brings you up. Never dive alone.</small>");
+        }
+      }
+      if (st.d === 0 && st.t > 0.3) {
+        st.diving = false;
+        if (!st.out && st.max > 0.5) {
+          st.best = Math.max(st.best, st.max);
+          var note = st.max > PB ? "You beat my personal best." : st.max > PB - 2 ? "Close to my personal best." : "Clean surface.";
+          say(st.max.toFixed(1) + " m, clean surface.<small>" + note + " Hold to dive again.</small>");
+        } else if (st.out) {
+          setTimeout(function () { st.out = false; say("Rested and ready.<small>Hold to dive again.</small>"); }, 900);
+        }
+        st.air = 1; st.t = 0;
+      }
+      st.t += dt;
+    }
+    draw(now);
+    depthEl.textContent = st.d.toFixed(1) + " m";
+    bestEl.textContent = "best " + st.best.toFixed(1) + " m";
+    airEl.style.transform = "scaleX(" + Math.max(0, st.air) + ")";
+    airEl.style.background = st.air < 0.25 ? "#ff9b7a" : "#8fd3ff";
+    requestAnimationFrame(tick);
+  }
+
+  var PX = 26; // pixels per metre
+  function draw(now) {
+    var top = H * 0.28; // diver's screen y
+    var cam = st.d * PX - top; // world y at screen top (surface at world y 0)
+    var g = ctx.createLinearGradient(0, 0, 0, H);
+    function col(m) { var t = Math.min(1, Math.max(0, m / 30)); return "rgb(" + Math.round(40 - 32 * t) + "," + Math.round(122 - 96 * t) + "," + Math.round(170 - 110 * t) + ")"; }
+    g.addColorStop(0, col(cam / PX)); g.addColorStop(1, col((cam + H) / PX));
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    // sky above surface
+    if (cam < 0) { ctx.fillStyle = "#cfe6f5"; ctx.fillRect(0, 0, W, -cam); ctx.strokeStyle = "rgba(255,255,255,.8)"; ctx.beginPath(); for (var x = 0; x <= W; x += 8) ctx.lineTo(x, -cam + Math.sin(x / 18 + now / 400) * 2); ctx.stroke(); }
+    // light rays
+    ctx.globalAlpha = Math.max(0, 0.12 - st.d / 200);
+    ctx.fillStyle = "#ffffff";
+    for (var i = 0; i < 4; i++) { var x0 = W * (0.15 + i * 0.25) + Math.sin(now / 2000 + i) * 20; ctx.beginPath(); ctx.moveTo(x0, Math.max(0, -cam)); ctx.lineTo(x0 + 40, Math.max(0, -cam)); ctx.lineTo(x0 + 90, H); ctx.lineTo(x0 + 30, H); ctx.fill(); }
+    ctx.globalAlpha = 1;
+    // dive line with depth tags
+    var lx = W * 0.62;
+    ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(lx, Math.max(0, -cam)); ctx.lineTo(lx, H); ctx.stroke();
+    ctx.font = "11px JetBrains Mono, monospace"; ctx.fillStyle = "rgba(255,255,255,.85)";
+    for (var m = 5; m <= 60; m += 5) { var y = m * PX - cam; if (y < -10 || y > H + 10) continue; ctx.fillRect(lx - 6, y - 1, 12, 2); ctx.fillText(m + " m", lx + 10, y + 4); }
+    var pby = PB * PX - cam;
+    if (pby > -10 && pby < H + 10) { ctx.setLineDash([4, 5]); ctx.strokeStyle = "rgba(255,190,140,.8)"; ctx.beginPath(); ctx.moveTo(0, pby); ctx.lineTo(W, pby); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = "rgba(255,200,160,.95)"; ctx.fillText("Keven's PB 16 m", 10, pby - 6); }
+    // bubbles
+    ctx.fillStyle = "rgba(255,255,255,.35)";
+    for (var b = 0; b < 14; b++) { var by = ((b * 97 + now / (14 + b % 5)) % (H + 40)); by = H - by; var bx = (b * 53) % W; ctx.beginPath(); ctx.arc(bx, by, 1.5 + (b % 3), 0, 7); ctx.fill(); }
+    // diver: head-down when kicking
+    var dx = lx - 22, dy = top, ang = st.hold ? Math.PI / 2 : -Math.PI / 2, kick = Math.sin(now / (st.hold ? 90 : 260)) * 0.35;
+    ctx.save(); ctx.translate(dx, dy); ctx.rotate(ang);
+    ctx.fillStyle = "#0b1320"; ctx.strokeStyle = "#0b1320"; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.arc(14, 0, 5.5, 0, 7); ctx.fill();               // head
+    ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(8, 0); ctx.lineTo(-10, 0); ctx.stroke(); // body
+    ctx.lineWidth = 3.5; ctx.beginPath(); ctx.moveTo(-10, 0); ctx.lineTo(-24, 4 * Math.sin(kick * 3)); ctx.stroke();
+    ctx.fillStyle = "#2b6fd6"; ctx.beginPath(); ctx.moveTo(-23, 0); ctx.lineTo(-44, -6 + kick * 14); ctx.lineTo(-44, 6 + kick * 14); ctx.closePath(); ctx.fill(); // fins
+    ctx.restore();
+  }
+
+  size(); addEventListener("resize", size);
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
