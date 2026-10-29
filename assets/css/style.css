@@ -377,3 +377,7 @@ dialog.namecard::backdrop { background: rgba(8, 14, 24, .45); backdrop-filter: b
 @media (max-width: 860px) { .hero { grid-template-columns: minmax(0, 1fr) 15rem; } .hero .portrait { width: 15rem; } }
 @media (max-width: 680px) { .hero { grid-template-columns: minmax(0, 1fr); } .hero .portrait { width: min(100%, 18rem); } }
 @media (max-width: 640px) { .nav a { padding: .35rem .4rem; } }
+/* simpler timeline: no location labels, no dots, normal-case dates */
+.tl .when { text-transform: none; letter-spacing: 0; font-size: .8rem; }
+.tl .what { border-left: 0; padding-left: 0; }
+.tl .what::before { display: none; }
