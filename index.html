@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Zijun (Keven) Zhuang</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Zijun (Keven) Zhuang — Applied & Computational Mathematics at UC Irvine, incoming M.S. Computer Science at USC. Research in machine learning for energy-efficient computing.">
+<meta name="description" content="Zijun (Keven) Zhuang, a senior in Applied and Computational Mathematics at UC Irvine and an incoming M.S. Computer Science student at USC, working on machine learning research and secure software systems.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
@@ -20,8 +19,11 @@
     <a class="wordmark" href="index.html">Zijun Zhuang</a>
     <nav class="nav" aria-label="Main">
       <a href="#research">research</a>
+      <a href="#projects">projects</a>
       <a href="#experience">experience</a>
       <a href="#education">education</a>
+      <a href="#skills">skills</a>
+      <a href="#playground">playground</a>
       <a href="life.html">life</a>
       <a href="assets/cv.pdf">cv</a>
     </nav>
@@ -36,12 +38,12 @@
       <div class="hero-text">
         <h1 class="name">Zijun <span class="aka">(Keven)</span> Zhuang</h1>
         <button class="han-btn" type="button" data-open-name aria-haspopup="dialog">庄梓俊<small>about my name</small></button>
-        <p class="statement">I am interested in machine learning, especially where linear algebra, probability and numerical methods meet learning systems.</p>
         <div class="bio">
-          <p>I am a senior in Applied and Computational Mathematics at UC Irvine, where I work on dynamic load management for edge data centers at CalPlug, Calit2, advised by <a href="https://www.calplug.org/about/team">Prof. G.P. Li</a> and <a href="https://www.calplug.org/about/team">Dr. Shuoyu (Arnold) Wang</a>. In January 2027 I will begin the M.S. in Computer Science at USC, and I plan to pursue a PhD in an AI-related field.</p>
+          <p>I am a senior in Applied and Computational Mathematics at UC Irvine. I am interested in machine learning, especially where linear algebra, probability and numerical methods meet learning systems. At CalPlug, Calit2, I work on dynamic load management for edge data centers, advised by <a href="https://www.calplug.org/about/team">Prof. G.P. Li</a> and <a href="https://www.calplug.org/about/team">Dr. Shuoyu (Arnold) Wang</a>.</p>
+          <p>I also like actually building systems. I am currently developing a router management console (Go, Vue) for a network operator in Shanghai, where I am responsible for its permission system and security design. In January 2027 I will begin the M.S. in Computer Science at USC. My long-term interest is AI research, and I am looking for summer 2027 internships in machine learning, software and security.</p>
         </div>
         <div class="links">
-          <a class="chip solid" href="mailto:zijunzhu@usc.edu">Email</a>
+          <a class="chip solid" href="mailto:zzijun12@gmail.com">Email</a>
           <a class="chip" href="https://github.com/kevenzhuang">GitHub</a>
           <a class="chip" href="https://www.linkedin.com/in/keven-zhuang-62643b3b6/">LinkedIn</a>
           <a class="chip" href="assets/cv.pdf">CV</a>
@@ -66,7 +68,7 @@
       <h2>Research</h2>
       <div class="timeline">
         <article class="tl">
-          <div class="when">Mar 2026 —<br>Present</div>
+          <div class="when">Mar 2026 — <br>Present</div>
           <div class="what">
             <h3>Dynamic Load Management for Data Centers</h3>
             <p class="role">Research Assistant, CalPlug, Calit2, UC Irvine · advised by <a href="https://www.calplug.org/about/team">Prof. G.P. Li</a> and <a href="https://www.calplug.org/about/team">Dr. Shuoyu (Arnold) Wang</a></p>
@@ -74,7 +76,19 @@
           </div>
         </article>
         <article class="tl">
-          <div class="when">Mar 2026 —<br>Jun 2026</div>
+          <div class="when">May 2025 — <br>Jun 2025</div>
+          <div class="what">
+            <h3>Self-Correction in LLM Grading Agents</h3>
+            <p class="role">Independent Project</p>
+            <ul class="points">
+              <li>Built a reference-free grading agent (Qwen2.5-1.5B, vLLM) that runs multiple rounds of self-critique on GSM8K solutions.</li>
+              <li>On 300 solutions with three critique rounds, accuracy was 47.3% versus 47.0% for single-pass grading, with no meaningful improvement.</li>
+              <li>Found “leniency drift”: critique rounds made the grader more likely to accept answers, and its detection rate for wrong answers fell from 21% to 17%.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="tl">
+          <div class="when">Mar 2026 — <br>Jun 2026</div>
           <div class="what">
             <h3>Near-Isometry of Gaussian Random Matrices</h3>
             <p class="role">Directed Reading Program, Department of Mathematics, UC Irvine</p>
@@ -82,7 +96,7 @@
           </div>
         </article>
         <article class="tl">
-          <div class="when">Jan 2025 —<br>Jun 2025</div>
+          <div class="when">Jan 2025 — <br>Jun 2025</div>
           <div class="what">
             <h3>AI-Powered Math Grading System</h3>
             <p class="role">Research Assistant, Department of Mathematics, UC Irvine · advised by <a href="https://www.faculty.uci.edu/profile/?facultyId=5707">Prof. Yifeng Yu</a></p>
@@ -92,11 +106,33 @@
       </div>
     </section>
 
+    <section class="sec" id="projects">
+      <h2>Projects</h2>
+      <div class="timeline">
+        <article class="tl">
+          <div class="when">Oct 2026 — <br>Present</div>
+          <div class="what">
+            <h3>Router Management Web Console</h3>
+            <p class="role">Software Developer, uXconnect (Shanghai Youxun Industry Co., Ltd.) · Remote</p>
+            <p class="stack">Go · Vue 3 · TypeScript · SQLite · Docker · MikroTik RouterOS REST API</p>
+            <ul class="points">
+              <li>A lightweight web console that runs inside the router's built-in Docker container, so staff and enterprise customers can manage MikroTik routers from a browser.</li>
+              <li>Ships as a single 5.6 MB multi-architecture image (x86, ARM64, ARMv7) that uses about 3–5 MB of memory and under 1% CPU.</li>
+              <li>Profile-based RBAC, with 12 server-side rules that prevent privilege escalation and cross-tenant access, each covered by automated tests.</li>
+              <li>Security hardening: HTTPS, argon2id, login lockout, CSRF protection and an append-only audit log.</li>
+              <li>Ran static analysis and dependency scanning with gosec, Semgrep, govulncheck and npm audit, fixed the issues found, and documented the reasoning for 9 false positives in the code.</li>
+              <li>Verified deployment and upgrades on a RouterOS 7.25 test router.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="sec" id="experience">
       <h2>Experience</h2>
       <div class="timeline">
         <article class="tl">
-          <div class="when">Jul 2025 —<br>Aug 2025</div>
+          <div class="when">Jul 2025 — <br>Aug 2025</div>
           <div class="what">
             <h3>Tencent Technology (Shanghai) Co., Ltd.</h3>
             <p class="role">Operations Intern · West Bund, Xuhui, Shanghai</p>
@@ -104,11 +140,11 @@
           </div>
         </article>
         <article class="tl">
-          <div class="when">Jul 2024 —<br>Sep 2024</div>
+          <div class="when">Jul 2024 — <br>Sep 2024</div>
           <div class="what">
             <h3>Shanghai Youxun Industry Co., Ltd.</h3>
-            <p class="role">IT &amp; Business Intern · Caohejing Hi-Tech Park, Xuhui, Shanghai</p>
-            <p class="desc">Supported network deployment for 20+ corporate clients and interpreted in English–Mandarin client presentations.</p>
+            <p class="role">Network Engineering Intern · Caohejing Hi-Tech Park, Xuhui, Shanghai</p>
+            <p class="desc">Supported network deployment (fiber, MPLS VPN, SD-WAN) for 20+ corporate clients, configuring routers, modems and ONUs, and using PPPoE, DHCP and VLANs for network segmentation.</p>
           </div>
         </article>
       </div>
@@ -118,24 +154,40 @@
       <h2>Education</h2>
       <div class="timeline">
         <article class="tl">
-          <div class="when">Jan 2027 —<br>Dec 2028</div>
+          <div class="when">Jan 2027 — <br>Dec 2028</div>
           <div class="what">
             <h3>University of Southern California</h3>
             <p class="role">M.S. in Computer Science (Scientists and Engineers)</p>
           </div>
         </article>
         <article class="tl">
-          <div class="when">Sep 2023 —<br>Dec 2026</div>
+          <div class="when">Sep 2023 — <br>Dec 2026</div>
           <div class="what">
             <h3>University of California, Irvine</h3>
             <p class="role">B.S. in Applied and Computational Mathematics · Dean's Honor List</p>
           </div>
         </article>
+      </div>
+    </section>
+
+    <section class="sec" id="skills">
+      <h2>Skills</h2>
+      <div class="timeline">
         <article class="tl">
-          <div class="when">Skills</div>
-          <div class="what">
-            <p class="desc">Python, C++, Java, R, MATLAB · PyTorch, TensorFlow, Hugging Face, vLLM, OpenCV · Git, Linux</p>
-          </div>
+          <div class="when">Languages</div>
+          <div class="what"><p class="desc">Python, Go, TypeScript/JavaScript, C++, Java, SQL, R, MATLAB</p></div>
+        </article>
+        <article class="tl">
+          <div class="when">Machine<br>Learning</div>
+          <div class="what"><p class="desc">PyTorch, TensorFlow, Hugging Face, vLLM, OpenCV</p></div>
+        </article>
+        <article class="tl">
+          <div class="when">Systems &amp;<br>Security</div>
+          <div class="what"><p class="desc">Docker, SQLite, Linux, Git, REST APIs, RBAC, static analysis (gosec, Semgrep)</p></div>
+        </article>
+        <article class="tl">
+          <div class="when">Networking</div>
+          <div class="what"><p class="desc">MPLS VPN, SD-WAN, VLAN, BGP/OSPF</p></div>
         </article>
       </div>
     </section>

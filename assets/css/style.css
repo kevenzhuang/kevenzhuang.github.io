@@ -381,3 +381,8 @@ dialog.namecard::backdrop { background: rgba(8, 14, 24, .45); backdrop-filter: b
 .tl .when { text-transform: none; letter-spacing: 0; font-size: .8rem; }
 .tl .what { border-left: 0; padding-left: 0; }
 .tl .what::before { display: none; }
+
+/* project / research bullet lists, in the same type as .desc */
+.tl .stack { font-family: var(--f-mono); font-size: .74rem; color: var(--ink-2); margin-top: .1rem; }
+.tl .points { margin: .35rem 0 0; padding-left: 1.1rem; display: grid; gap: .3rem; font-size: .96rem; }
+.tl .points li::marker { color: var(--ink-2); }
